@@ -1,0 +1,32 @@
+﻿@page
+@model PRN222_Project.Pages.AdminPageModel
+@{
+    ViewData["Title"] = "Admin Page";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h3>Welcome, @User.Identity.Name!</h3>
+
+    <div>
+        <h4>Admin Dashboard</h4>
+        <p>Here you can manage users, roles, movies, and other resources.</p>
+
+        <!-- Example of a management section -->
+        <div>
+            <h5>Manage Movies</h5>
+            <a href="/Movies/Manage">Go to Movie Management</a>
+        </div>
+
+        <div>
+            <h5>Manage Users</h5>
+            <a href="/Users/Manage">Go to User Management</a>
+        </div>
+    </div>
+}
+else
+{
+    <p>You are not logged in. Please <a href="/Account/Login">Login</a> to access the Admin Page.</p>
+}
