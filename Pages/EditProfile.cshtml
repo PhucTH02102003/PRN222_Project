@@ -1,0 +1,167 @@
+﻿@page
+@model PRN222_Project.Pages.EditProfileModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+</head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Điều chỉnh vị trí header và footer */
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .container {
+        max-width: 800px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        margin-top: 20px;
+    }
+
+    footer {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+        background-color: #f8f9fa;
+        margin-top: 20px;
+    }
+
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-color: #ffffff;
+    }
+
+    h2 {
+        color: #5c3c92; /* Màu tím cho tiêu đề */
+        font-size: 30px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        text-align: left;
+    }
+
+    label {
+        display: block;
+        font-size: 14px;
+        color: #5c3c92; /* Màu tím cho label */
+    }
+
+    input[type="text"], input[type="password"], input[type="email"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: 2px solid #5c3c92; /* Màu tím cho đường viền */
+        border-radius: 8px;
+        margin-top: 8px;
+        margin-bottom: 10px;
+        outline: none;
+    }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+            border-color: #A3C4F3; /* Màu xanh khi focus vào input */
+        }
+
+    button {
+        background-color: #A3C4F3; /* Màu xanh cho nút */
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+
+        button:hover {
+            background-color: #5c3c92; /* Màu tím khi hover */
+        }
+
+</style>
+<body>
+
+    <div class="container mt-5">
+        <h2>Edit Profile</h2>
+
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        @if (ModelState.ErrorCount > 0)
+        {
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <!-- Hiển thị thông báo thành công nếu cập nhật thông tin thành công -->
+        @if (Model.IsProfileUpdated)
+        {
+            <div class="alert alert-success">
+                <strong>Success!</strong> Your profile has been updated successfully.
+            </div>
+        }
+
+        <!-- Hiển thị thông báo nếu email không hợp lệ -->
+        @if (!Model.IsEmailValid)
+        {
+            <div class="alert alert-danger">
+                <strong>Error:</strong> Please enter a valid email address.
+            </div>
+        }
+
+        <!-- Hiển thị thông báo nếu số điện thoại không hợp lệ -->
+        @if (!Model.IsPhoneValid)
+        {
+            <div class="alert alert-danger">
+                <strong>Error:</strong> Please enter a valid phone number (10 digits).
+            </div>
+        }
+
+        <form method="post">
+            <!-- Username (readonly) -->
+            <div class="mb-3">
+                <label for="Username" class="form-label">Username</label>
+                <input type="text" id="Username" name="Username" class="form-control" value="@Model.User.Username" readonly />
+            </div>
+
+            <!-- Password (readonly) -->
+            <div class="mb-3">
+                <input type="password" id="Password" name="Password" class="form-control" value="@Model.User.Password" hidden />
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+                <label for="Email" class="form-label">Email</label>
+                <input type="email" id="Email" name="Email" class="form-control" value="@Model.User.Email" required />
+            </div>
+
+            <!-- Phone Number -->
+            <div class="mb-3">
+                <label for="PhoneNumber" class="form-label">Phone Number</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.User.PhoneNumber" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+    </div>
+
+</body>
+</html>

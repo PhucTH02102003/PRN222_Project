@@ -1,6 +1,8 @@
 ﻿@page
 @model PRN222_Project.Pages.LoginModel
-
+@{
+    Layout = null;  // Không sử dụng layout cho trang này
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,13 +13,36 @@
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #D4A5A5, #A3C4F3); /* Màu sắc chủ đạo: hồng, tím, xanh */
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Điều chỉnh vị trí header và footer */
             height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+        }
+
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
         }
 
         .login-container {
@@ -28,7 +53,7 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
-            margin-left: 450px;
+            margin-left: 550px;
         }
 
         h2 {

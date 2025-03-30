@@ -15,6 +15,7 @@ namespace PRN222_Project
                 .AddCookie(options =>
                 {
                     options.LoginPath = "/Login";  // Đường dẫn trang đăng nhập
+                    options.LogoutPath = "/Logout";
                     options.AccessDeniedPath = "/AccessDenied";  // Đường dẫn khi người dùng không có quyền truy cập
                 });
 

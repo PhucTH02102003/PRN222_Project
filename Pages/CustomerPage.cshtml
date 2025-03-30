@@ -1,6 +1,8 @@
 ﻿@page
 @model PRN222_Project.Pages.CustomerPageModel
-
+@{
+    Layout = "_Layout";  // Tham chiếu đến layout chung
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,8 +17,31 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Điều chỉnh vị trí header và footer */
             height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+        }
+
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
         }
 
         .customer-container {
@@ -27,6 +52,7 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
+            margin-left: 300px;
         }
 
         h2 {
