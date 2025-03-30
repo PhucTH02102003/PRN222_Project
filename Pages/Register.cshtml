@@ -1,6 +1,8 @@
 ﻿@page
 @model PRN222_Project.Pages.RegisterModel
-
+@{
+    Layout = null;  // Không sử dụng layout cho trang này
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,8 +18,31 @@
             padding: 0;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Điều chỉnh vị trí header và footer */
             height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+        }
+
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
         }
 
         .register-container {
@@ -28,11 +53,11 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
-            margin-left: 450px;
+            margin-left: 500px;
         }
 
         h2 {
-            color: #5c3c92;
+            color: #5c3c92; /* Màu tím cho tiêu đề */
             font-size: 30px;
             margin-bottom: 20px;
         }
@@ -45,7 +70,7 @@
         label {
             display: block;
             font-size: 14px;
-            color: #5c3c92;
+            color: #5c3c92; /* Màu tím cho label */
         }
 
         input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {

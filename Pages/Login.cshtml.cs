@@ -24,6 +24,8 @@ namespace PRN222_Project.Pages
         [BindProperty]
         public string Password { get; set; }
 
+        public string ErrorMessage { get; set; } // Add this property
+
         public async Task<IActionResult> OnPostAsync()
         {
             Debug.WriteLine("Username: " + Username);  // Kiểm tra xem có nhận đúng giá trị không
@@ -41,11 +43,12 @@ namespace PRN222_Project.Pages
 
                 // Tạo các claims (bao gồm vai trò)
                 var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, user.Username),
-                    // Lấy các vai trò và thêm vào claims
-                    new Claim(ClaimTypes.Role, string.Join(",", userRoles.Select(ur => ur.Role.RoleName)))
-                };
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                // Lấy các vai trò và thêm vào claims
+                new Claim(ClaimTypes.Role, string.Join(",", userRoles.Select(ur => ur.Role.RoleName)))
+            };
 
                 var identity = new ClaimsIdentity(claims, "Login");
                 var principal = new ClaimsPrincipal(identity);
@@ -64,8 +67,10 @@ namespace PRN222_Project.Pages
                 }
             }
 
-            // Nếu đăng nhập thất bại, giữ lại trang đăng nhập
+            // Nếu đăng nhập thất bại, giữ lại trang đăng nhập và hiển thị thông báo lỗi
+            ErrorMessage = "Invalid username or password.";
             return Page();
         }
     }
+
 }

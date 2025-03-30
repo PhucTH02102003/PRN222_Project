@@ -1,15 +1,13 @@
 ﻿@page
-@model PRN222_Project.Pages.LoginModel
-@{
-    Layout = null;  // Không sử dụng layout cho trang này
-}
+@model PRN222_Project.Pages.BookingConfirmationModel
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-
+    <title>Booking Confirmation</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -118,41 +116,57 @@
                     text-decoration: underline;
                 }
 
-        .error-message {
-            color: red;
-            font-size: 14px; /* Adjust the font size as needed */
+        .confirmation-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            margin-left: 300px;
+        }
+
+        h2 {
+            color: #5c3c92;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .confirmation-details {
+            margin-top: 20px;
+        }
+
+        .confirmation-details div {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
-        <h2>Login</h2>
+    <div class="confirmation-container">
+        <h2>Booking Confirmation</h2>
 
-        <form method="post">
-            <div class="form-group">
-                <label asp-for="Username"></label>
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Password"></label>
-                <input asp-for="Password" type="password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <button type="submit" class="btn btn-primary">Login</button>
-        </form>
+        <div class="confirmation-details">
+            <div><strong>Booked By:</strong> @Model.Username</div>
+            <div><strong>Movie:</strong> @Model.Movie.Title</div>
+            <div><strong>Cinema:</strong> @Model.Cinema.CinemaName</div>
+            <div><strong>Showtime:</strong> @(Model.Showtime.StartTime.HasValue ? Model.Showtime.StartTime.Value.ToString("hh:mm tt") : "No Time Available")</div>
 
-        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-        {
-            <div class="error-message" role="alert">
-                @Model.ErrorMessage
+            <div>
+                <strong>Seats:</strong>
+                <ul>
+                    @foreach (var seat in Model.Seats)
+                    {
+                        @seat.SeatNumber
+                    }
+                </ul>
             </div>
-        }
-
-        <div class="register-link">
-            <p>Don't have an account? <a href="/Register">Register here</a></p>
+            <div><strong>Status:</strong> @Model.Booking.Status</div>
+            <div><strong>Total Amount:</strong> @Model.Booking.TotalAmount</div>
         </div>
+
+        <a href="/CustomerPage" class="btn btn-primary">Back to Customer Page</a>
     </div>
 
 </body>

@@ -7,134 +7,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Details</title>
-
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; /* Điều chỉnh vị trí header và footer */
-            height: 100vh;
-            flex-direction: column;
-        }
-
-        .container {
-            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
-            margin-top: 20px;
-        }
-
-        footer {
-            width: 100%;
-            bottom: 0;
-            position: absolute;
-            background-color: #f8f9fa;
-            margin-top: 20px;
-        }
-
-        header {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            background-color: #ffffff;
-        }
-
-        header {
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 100;
-            background-color: #ffffff;
-        }
-
-        .movie-details-container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            margin-left: 300px;
-        }
-
-        h2 {
-            color: #5c3c92;
-            font-size: 30px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        label {
-            display: block;
-            font-size: 14px;
-            color: #5c3c92;
-        }
-
-        select, button {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            margin-top: 8px;
-            margin-bottom: 10px;
-            outline: none;
-            border: 2px solid #5c3c92;
-        }
-
-        button {
-            background-color: #A3C4F3;
-            color: white;
-            transition: background-color 0.3s ease;
-        }
-
-            button:hover {
-                background-color: #5c3c92;
-            }
-    </style>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 </head>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Điều chỉnh vị trí header và footer */
+        height: 100vh;
+        flex-direction: column;
+    }
+
+    .container {
+        max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        margin-top: 20px;
+    }
+
+    footer {
+        width: 100%;
+        bottom: 0;
+        position: absolute;
+        background-color: #f8f9fa;
+        margin-top: 20px;
+    }
+
+    header {
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background-color: #ffffff;
+    }
+
+    .seat-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+    }
+
+    .seat {
+        padding: 10px;
+        background-color: #D3D3D3; /* Màu nền mặc định cho ghế */
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .seat:hover {
+            background-color: #A3C4F3; /* Màu xanh khi hover ghế */
+        }
+
+        .seat input[type="radio"]:checked + label {
+            background-color: #5c3c92;
+            color: white;
+        }
+
+        /* Khi ghế đã được đặt */
+        .seat.booked {
+            background-color: #f8d7da; /* Màu đỏ nhạt cho ghế đã được đặt */
+            color: #721c24; /* Màu chữ tối để tương phản với nền đỏ nhạt */
+            pointer-events: none; /* Không cho phép chọn ghế đã được đặt */
+        }
+
+</style>
 <body>
 
-    <div class="movie-details-container">
-        <h2>Movie Details</h2>
+    <div class="container">
+        <h2>Movie Details: @Model.Movie.Title</h2>
 
-        <form method="post">
-            <!-- Showtime -->
+        <!-- Form để chọn showtime -->
+        <form method="get">
             <div class="form-group">
+                <input type="hidden" name="MovieId" value="@Model.MovieId" />
+                <input type="hidden" name="CinemaId" value="@Model.CinemaId" />
                 <label for="ShowtimeId">Choose a Showtime:</label>
-                <select id="ShowtimeId" name="ShowtimeId" required>
+                <select id="ShowtimeId" name="ShowtimeId" class="form-control" onchange="this.form.submit()">
                     <option value="">Select Showtime</option>
                     @foreach (var showtime in Model.Showtimes)
                     {
-                        <option value="@showtime.ShowtimeId">@showtime.StartTime</option>
+                        <option value="@showtime.ShowtimeId" selected="@(showtime.ShowtimeId == Model.ShowtimeId ? "selected" : null)">
+                            @showtime.StartTime?.ToString("hh:mm tt")
+                        </option>
                     }
                 </select>
-            </div>
 
-            <!-- Seat -->
-            <div class="form-group">
-                <label for="SeatId">Choose a Seat:</label>
-                <select id="SeatId" name="SeatId" required>
-                    <option value="">Select Seat</option>
-                    @foreach (var seat in Model.Seats)
-                    {
-                        <option value="@seat.SeatId">@seat.SeatNumber</option>
-                    }
-                </select>
-            </div>
 
-            <button type="submit">Book Ticket</button>
+
+            </div>
         </form>
+
+        @if (Model != null && Model.ShowtimeId > 0)
+        {
+            <!-- Form để chọn ghế sau khi showtime được chọn -->
+            <form method="post">
+                <div class="form-group">
+                    <label for="SeatId">Choose a Seat:</label>
+                    <div class="seat-grid">
+                        @foreach (var seat in Model.Seats)
+                        {
+                            <div class="seat" id="seat-@seat.SeatId"
+                                 style="@(seat.Status == "Booked" ? "background-color: #f5c6cb; pointer-events: none;" : "")">
+                                <input type="radio" id="seat-radio-@seat.SeatId" name="SeatId" value="@seat.SeatId"
+                                @(seat.Status == "Booked" ? "disabled" : "") />
+                                <label for="seat-radio-@seat.SeatId">@seat.SeatNumber</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Book Ticket</button>
+            </form>
+
+
+        }
     </div>
+    <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+    <script>
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/bookingHub")
+            .build();
+
+        // Kiểm tra trạng thái kết nối trước khi bắt đầu kết nối
+        connection.start()
+            .then(() => {
+                console.log("SignalR connected successfully");
+            })
+            .catch(err => {
+                console.error("SignalR connection failed: ", err);
+            });
+
+        // Nhận thông báo khi ghế được đặt và cập nhật giao diện
+        connection.on("ReceiveSeatUpdate", function (seatId) {
+            console.log(`Received update for seat: ${seatId}`);  // Debug: Kiểm tra xem có nhận được thông báo không
+
+            // Lấy phần tử ghế dựa trên ID và cập nhật giao diện
+            const seatElement = document.getElementById(`seat-${seatId}`);
+            if (seatElement) {
+                seatElement.style.backgroundColor = "#f5c6cb";  // Màu đỏ nhạt khi ghế đã được đặt
+                const radio = seatElement.querySelector("input[type='radio']");
+                if (radio) {
+                    radio.disabled = true;  // Vô hiệu hóa ghế đã đặt
+                }
+            }
+        });
+    </script>
+
 
 </body>
+
 </html>

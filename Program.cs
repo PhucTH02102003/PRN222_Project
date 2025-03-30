@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using PRN222_Project.Hubs;
 using PRN222_Project.Models;
 
 namespace PRN222_Project
@@ -25,6 +26,9 @@ namespace PRN222_Project
 
             // Thêm dịch vụ Razor Pages
             builder.Services.AddRazorPages();
+            // Thêm SignalR vào dịch vụ
+            builder.Services.AddSignalR();
+
 
             var app = builder.Build();
 
@@ -47,7 +51,7 @@ namespace PRN222_Project
                 context.Response.Redirect("/Login");  // Chuyển hướng đến trang Login
                 return Task.CompletedTask;
             });
-
+            app.MapHub<BookingHub>("/bookingHub");
             // Định nghĩa các trang Razor Pages
             app.MapRazorPages();
 
