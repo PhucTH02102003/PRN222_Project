@@ -1,0 +1,107 @@
+﻿@page
+@model PRN222_Project.Pages.MovieDetailsModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Details</title>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .movie-details-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #5c3c92;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #5c3c92;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            outline: none;
+            border: 2px solid #5c3c92;
+        }
+
+        button {
+            background-color: #A3C4F3;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #5c3c92;
+            }
+    </style>
+</head>
+<body>
+
+    <div class="movie-details-container">
+        <h2>Movie Details</h2>
+
+        <form method="post">
+            <!-- Showtime -->
+            <div class="form-group">
+                <label for="ShowtimeId">Choose a Showtime:</label>
+                <select id="ShowtimeId" name="ShowtimeId" required>
+                    <option value="">Select Showtime</option>
+                    @foreach (var showtime in Model.Showtimes)
+                    {
+                        <option value="@showtime.ShowtimeId">@showtime.StartTime</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Seat -->
+            <div class="form-group">
+                <label for="SeatId">Choose a Seat:</label>
+                <select id="SeatId" name="SeatId" required>
+                    <option value="">Select Seat</option>
+                    @foreach (var seat in Model.Seats)
+                    {
+                        <option value="@seat.SeatId">@seat.SeatNumber</option>
+                    }
+                </select>
+            </div>
+
+            <button type="submit">Book Ticket</button>
+        </form>
+    </div>
+
+</body>
+</html>

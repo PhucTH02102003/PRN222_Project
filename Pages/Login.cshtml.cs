@@ -51,7 +51,17 @@ namespace PRN222_Project.Pages
                 var principal = new ClaimsPrincipal(identity);
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return RedirectToPage("/AdminPage");  // Sau khi đăng nhập thành công, chuyển hướng đến trang Admin
+                // Kiểm tra vai trò và chuyển hướng đến trang tương ứng
+                if (userRoles.Any(ur => ur.Role!.RoleName == "Admin"))
+                {
+                    // Nếu là Admin, chuyển hướng đến trang Admin
+                    return RedirectToPage("/AdminPage");
+                }
+                else if (userRoles.Any(ur => ur.Role!.RoleName == "Customer"))
+                {
+                    // Nếu là Customer, chuyển hướng đến trang Customer
+                    return RedirectToPage("/CustomerPage");
+                }
             }
 
             // Nếu đăng nhập thất bại, giữ lại trang đăng nhập

@@ -10,7 +10,6 @@ namespace PRN222_Project
         {
             var builder = WebApplication.CreateBuilder(args);
 
-
             // Cấu hình Authentication (sử dụng Cookie Authentication)
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -23,7 +22,7 @@ namespace PRN222_Project
             builder.Services.AddDbContext<CinemaManagementContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("Default"))); // Sử dụng connection string trong appsettings.json
 
-            // Add services to the container.
+            // Thêm dịch vụ Razor Pages
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
@@ -37,15 +36,21 @@ namespace PRN222_Project
 
             app.UseRouting();
 
+            // Thêm Authentication và Authorization middleware
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Chuyển hướng đến trang Login khi ứng dụng được khởi chạy
+            app.MapGet("/", context =>
+            {
+                context.Response.Redirect("/Login");  // Chuyển hướng đến trang Login
+                return Task.CompletedTask;
+            });
+
+            // Định nghĩa các trang Razor Pages
             app.MapRazorPages();
 
             app.Run();
         }
-
-
-
     }
 }

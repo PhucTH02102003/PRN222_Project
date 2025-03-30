@@ -1,0 +1,140 @@
+﻿@page
+@model PRN222_Project.Pages.CustomerPageModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Page - Movie Booking</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .customer-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #5c3c92;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #5c3c92;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            outline: none;
+            border: 2px solid #5c3c92;
+            background-color: #A3C4F3;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+
+            button:hover {
+                background-color: #5c3c92;
+            }
+
+            button.selected {
+                background-color: #5c3c92;
+                font-weight: bold;
+            }
+
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="customer-container">
+        <h2>Welcome to Movie Booking</h2>
+
+        <!-- Form for choosing Movie and Cinema -->
+        <form method="get" action="/MovieDetails">
+            <!-- Movie Selection -->
+            <div class="form-group">
+                <label>Choose a Movie:</label>
+                <div class="button-container">
+                    @foreach (var movie in Model.Movies)
+                    {
+                        <button type="button" class="movie-button" onclick="selectOption('movie', @movie.MovieId, this)">@movie.Title</button>
+                    }
+                </div>
+            </div>
+
+            <!-- Cinema Selection -->
+            <div class="form-group">
+                <label>Choose a Cinema:</label>
+                <div class="button-container">
+                    @foreach (var cinema in Model.Cinemas)
+                    {
+                        <button type="button" class="cinema-button" onclick="selectOption('cinema', @cinema.CinemaId, this)">@cinema.CinemaName</button>
+                    }
+                </div>
+            </div>
+
+            <!-- Hidden inputs to pass MovieId and CinemaId -->
+            <input type="hidden" id="MovieId" name="MovieId" value="" />
+            <input type="hidden" id="CinemaId" name="CinemaId" value="" />
+
+            <!-- Next Button to proceed to MovieDetails -->
+            <button type="submit">Next</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to manage the selected button
+        function selectOption(type, id, button) {
+            // Remove 'selected' class from all buttons of this type
+            let buttons = document.querySelectorAll('.' + type + '-button');
+            buttons.forEach(function (btn) {
+                btn.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the clicked button
+            button.classList.add('selected');
+
+            // Update the hidden input field based on the selected button
+            if (type === 'movie') {
+                document.getElementById('MovieId').value = id;
+            } else if (type === 'cinema') {
+                document.getElementById('CinemaId').value = id;
+            }
+        }
+    </script>
+
+</body>
+</html>

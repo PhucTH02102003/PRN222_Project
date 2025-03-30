@@ -1,17 +1,123 @@
 ﻿@page
 @model PRN222_Project.Pages.LoginModel
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
 
-<h2>Login</h2>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3); /* Màu sắc chủ đạo: hồng, tím, xanh */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
 
-<form method="post">
-    <div>
-        <label for="Username">Username:</label>
-        <input type="text" id="Username" name="Username" required />
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            margin-left: 450px;
+        }
+
+        h2 {
+            color: #5c3c92; /* Màu tím cho tiêu đề */
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #5c3c92; /* Màu tím cho label */
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #5c3c92; /* Màu tím cho đường viền */
+            border-radius: 8px;
+            margin-top: 8px;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #A3C4F3; /* Màu xanh khi focus vào input */
+        }
+
+        button {
+            background-color: #A3C4F3; /* Màu xanh cho nút */
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #5c3c92; /* Màu tím khi hover */
+        }
+
+        .register-link {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #5c3c92;
+            text-decoration: none;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>Login</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="Username">Username:</label>
+                <input type="text" id="Username" name="Username" required />
+            </div>
+
+            <div class="form-group">
+                <label for="Password">Password:</label>
+                <input type="password" id="Password" name="Password" required />
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="register-link">
+            <p>Don't have an account? <a href="/Register">Register here</a></p>
+        </div>
     </div>
-    <div>
-        <label for="Password">Password:</label>
-        <input type="password" id="Password" name="Password" required />
-    </div>
-    <button type="submit">Login</button>
-</form>
+
+</body>
+</html>

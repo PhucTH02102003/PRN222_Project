@@ -25,9 +25,14 @@ namespace PRN222_Project.Pages
         [BindProperty]
         public string ConfirmPassword { get; set; }
 
+        [BindProperty]
+        public string Email { get; set; }
+
+        [BindProperty]
+        public string PhoneNumber { get; set; }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            // Kiểm tra nếu mật khẩu và xác nhận mật khẩu không khớp
             if (Password != ConfirmPassword)
             {
                 ModelState.AddModelError("Password", "Password and Confirm Password must match.");
@@ -50,14 +55,47 @@ namespace PRN222_Project.Pages
             {
                 Username = Username,
                 Password = hashedPassword,
+                Email = Email, // Thêm Email
+                PhoneNumber = PhoneNumber, // Thêm PhoneNumber
                 CreatedAt = DateTime.Now
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
+            // Lấy vai trò "Customer" từ cơ sở dữ liệu
+            var role = await _context.Roles.SingleOrDefaultAsync(r => r.RoleName == "Customer");
+            if (role != null)
+            {
+                // Tạo đối tượng UserRole để gán vai trò cho người dùng
+                var userRole = new UserRole
+                {
+                    UserId = user.UserId,
+                    RoleId = role.RoleId
+                };
+
+                // Thêm vào bảng UserRoles để liên kết người dùng với vai trò Customer
+                _context.UserRoles.Add(userRole);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                role = new Role { RoleName = "Customer" };
+                _context.Roles.Add(role);
+                await _context.SaveChangesAsync();
+
+                var userRole = new UserRole
+                {
+                    UserId = user.UserId,
+                    RoleId = role.RoleId
+                };
+
+                _context.UserRoles.Add(userRole);
+                await _context.SaveChangesAsync();
+            }
+
             // Sau khi đăng ký thành công, chuyển hướng người dùng về trang đăng nhập
-            return RedirectToPage("/Login");  // Chuyển hướng về trang đăng nhập sau khi đăng ký thành công
+            return RedirectToPage("/Login");
         }
     }
 }
