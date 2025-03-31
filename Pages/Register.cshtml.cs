@@ -57,7 +57,8 @@ namespace PRN222_Project.Pages
                 Password = hashedPassword,
                 Email = Email, // Thêm Email
                 PhoneNumber = PhoneNumber, // Thêm PhoneNumber
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                IsLocked = false
             };
 
             _context.Users.Add(user);

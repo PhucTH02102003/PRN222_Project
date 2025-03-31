@@ -1,0 +1,128 @@
+﻿@page
+@model PRN222_Project.Pages.AddMovieModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Movie</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* align-items: flex-start;  */
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        }
+
+        footer {
+            width: 85%;
+            height: -100px;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            height: -100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+
+    </style>
+</head>
+<body>
+
+<form method="post">
+    <!-- Movie Title -->
+    <div class="form-group">
+        <label for="Title">Movie Title</label>
+        <input type="text" class="form-control" id="Title" name="Title" value="@Model.Movie.Title" />
+    </div>
+
+    <!-- Movie Description -->
+    <div class="form-group">
+        <label for="Description">Description</label>
+        <textarea class="form-control" id="Description" name="Description">@Model.Movie.Description</textarea>
+    </div>
+
+    <!-- Movie Duration -->
+    <div class="form-group">
+        <label for="Duration">Duration (minutes)</label>
+        <input type="number" class="form-control" id="Duration" name="Duration" value="@Model.Movie.Duration" />
+    </div>
+
+    <!-- Movie Genre -->
+    <div class="form-group">
+        <label for="Genre">Genre</label>
+        <input type="text" class="form-control" id="Genre" name="Genre" value="@Model.Movie.Genre" />
+    </div>
+
+    <!-- Movie Release Date -->
+    <div class="form-group">
+        <label for="ReleaseDate">Release Date</label>
+        <input type="date" class="form-control" id="ReleaseDate" name="ReleaseDate" value="@Model.Movie.ReleaseDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <!-- Showtime Section -->
+    <h3>Showtimes</h3>
+    @foreach (var showtime in Model.Movie.Showtimes)
+    {
+        <div class="form-group">
+            <label for="ShowtimeStart_@showtime.ShowtimeId">Start Time</label>
+            <input type="datetime-local" class="form-control" id="ShowtimeStart_@showtime.ShowtimeId"
+                   name="ShowtimeStart_@showtime.ShowtimeId"
+                   value="@showtime.StartTime?.ToString("yyyy-MM-ddTHH:mm")" />
+
+            <label for="ShowtimeEnd_@showtime.ShowtimeId">End Time</label>
+            <input type="datetime-local" class="form-control" id="ShowtimeEnd_@showtime.ShowtimeId"
+                   name="ShowtimeEnd_@showtime.ShowtimeId"
+                   value="@showtime.EndTime?.ToString("yyyy-MM-ddTHH:mm")" />
+        </div>
+    }
+
+    <!-- Add another Showtime -->
+    <div class="form-group">
+        <button type="button" class="btn btn-secondary" id="addShowtimeBtn">Add Showtime</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Movie</button>
+</form>
+
+@section Scripts {
+    <script>
+        // Add Showtime dynamically
+        document.getElementById('addShowtimeBtn').addEventListener('click', function() {
+            var form = document.querySelector('form');
+            var newShowtime = document.createElement('div');
+            newShowtime.classList.add('form-group');
+            newShowtime.innerHTML = `
+                <label>Start Time</label>
+                <input type="datetime-local" class="form-control" name="ShowtimeStart[]" required />
+                <label>End Time</label>
+                <input type="datetime-local" class="form-control" name="ShowtimeEnd[]" required />
+            `;
+            form.insertBefore(newShowtime, document.querySelector('button[type="submit"]'));
+        });
+    </script>
+}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>

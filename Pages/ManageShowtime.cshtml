@@ -1,0 +1,92 @@
+﻿@page
+@model PRN222_Project.Pages.ManageShowtimeModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Showtime</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* align-items: flex-start;  */
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        }
+
+        footer {
+            width: 85%;
+            height: -100px;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            height: -100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+
+    </style>
+</head>
+<body>
+<h2>Manage Showtime for @Model.Movie.Title</h2>
+
+<form method="post">
+    @foreach (var showtime in Model.Movie.Showtimes)
+    {
+        <div class="form-group">
+            <label for="ShowtimeStart_@showtime.ShowtimeId">Start Time</label>
+            <input type="datetime-local" class="form-control" id="ShowtimeStart_@showtime.ShowtimeId"
+                   name="ShowtimeStart_@showtime.ShowtimeId" value="@showtime.StartTime?.ToString("yyyy-MM-ddTHH:mm")" required />
+
+            <label for="ShowtimeEnd_@showtime.ShowtimeId">End Time</label>
+            <input type="datetime-local" class="form-control" id="ShowtimeEnd_@showtime.ShowtimeId"
+                   name="ShowtimeEnd_@showtime.ShowtimeId" value="@showtime.EndTime?.ToString("yyyy-MM-ddTHH:mm")" required />
+
+            <!-- Dropdown for Screen -->
+            <label for="ShowtimeScreen_@showtime.ShowtimeId">Screen</label>
+            <select class="form-control" id="ShowtimeScreen_@showtime.ShowtimeId" name="ShowtimeScreen_@showtime.ShowtimeId" onchange="this.form.submit()">
+                <option value="">Select Screen</option>
+                @foreach (var screen in Model.Screens)
+                {
+                        <option value="@screen.ScreenId" selected="@(screen.ScreenId == showtime.ScreenId)">
+                        @screen.ScreenName
+                    </option>
+                }
+            </select>
+
+            <!-- Cinema Name Display -->
+            <div id="CinemaDisplay_@showtime.ShowtimeId" class="mt-3">
+                <label for="Cinema_@showtime.ShowtimeId">Cinema: </label>
+                <span>@Model.Screens.FirstOrDefault(s => s.ScreenId == showtime.ScreenId)?.Cinema?.CinemaName</span>
+            </div>
+
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Save Showtime Changes</button>
+</form>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>

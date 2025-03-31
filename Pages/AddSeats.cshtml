@@ -1,0 +1,26 @@
+﻿@page
+@model PRN222_Project.Pages.AddSeatsModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Seats</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+    <h2>Add Seats for Screen: @Model.Screen.ScreenName</h2>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="SeatNumber">Seat Number</label>
+            <input type="text" class="form-control" id="SeatNumber" name="SeatNumber" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Seat</button>
+    </form>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>

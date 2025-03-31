@@ -1,0 +1,113 @@
+﻿@page
+@model PRN222_Project.Pages.ManageUsersModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 85%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+        }
+
+        header {
+            width: 85%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+
+        .dashboard-card {
+            display: inline-block;
+            width: 150px;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+            border-radius: 8px;
+            background-color: #f1f1f1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>Manage Users</h2>
+
+        <!-- Thêm người dùng mới -->
+        <div class="mb-4">
+            <a href="/AddUser" class="btn btn-success">Add New User</a>
+        </div>
+
+        <!-- Danh sách người dùng -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Users)
+                {
+                    <tr>
+                        <td>@user.Username</td>
+                        <td>@user.Email</td>
+                        <td>@user.PhoneNumber</td>
+                        <td>@user.CreatedAt?.ToString("MM/dd/yyyy")</td>
+                        <td>
+                            <!-- Form để Lock/Unlock account -->
+                            <form method="post" asp-page-handler="Lock" asp-route-userId="@user.UserId">
+                                @if (user.IsLocked)
+                                {
+                                    <button type="submit" class="btn btn-success btn-sm">Unlock Account</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-warning btn-sm">Lock Account</button>
+                                }
+                            </form>
+                        </td>
+                        <td>
+                            <!-- Cột Edit: Thêm nút Edit để chỉnh sửa người dùng -->
+                            <a href="/EditUser/@user.UserId" class="btn btn-info btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+﻿@page "{userId:int}"
+@model PRN222_Project.Pages.EditUserModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin-top: 20px;
+        }
+
+        footer {
+            width: 85%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+        }
+
+        header {
+            width: 85%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>Edit User</h2>
+
+        <form method="post">
+            <div class="form-group">
+                <label for="Username">Username</label>
+                <input type="text" id="Username" name="Username" class="form-control" value="@Model.User.Username" readonly />
+            </div>
+
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input type="email" id="Email" name="Email" class="form-control" value="@Model.User.Email" />
+            </div>
+
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number</label>
+                <input type="text" id="PhoneNumber" name="PhoneNumber" class="form-control" value="@Model.User.PhoneNumber" />
+                <!-- Hiển thị thông báo lỗi nếu có -->
+                @if (ModelState.ContainsKey("User.PhoneNumber"))
+                {
+                    <div class="text-danger">
+                        @ModelState["User.PhoneNumber"].Errors[0].ErrorMessage
+                    </div>
+                }
+            </div>
+
+            <input type="hidden" name="Password" value="@Model.User.Password" />
+            <input readonly name="CreatedAt" value="@Model.User.CreatedAt" />
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

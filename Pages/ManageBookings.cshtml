@@ -1,0 +1,125 @@
+﻿@page
+@model PRN222_Project.Pages.ManageBookingsModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Bookings</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* align-items: flex-start;  */
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        }
+
+        footer {
+            width: 85%;
+            height: -100px;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            height: -100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;   
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+
+        pagination {
+            margin-bottom:10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container mt-5">
+        <h2>Manage Bookings</h2>
+
+        <!-- Danh sách bookings -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Booking ID</th>
+                    <th>Customer Name</th>
+                    <th>Showtime</th>
+                    <th>Seat Number</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Bookings != null)
+                {
+                    @foreach (var booking in Model.Bookings)
+                    {
+                        <tr>
+                            <td>@booking.BookingId</td>
+                            <td>@booking.User.Username</td>
+                            <td>@booking.Showtime.StartTime?.ToString("MM/dd/yyyy hh:mm tt")</td>
+                            <td>
+                                @foreach (var seatBooking in booking.SeatBookings)
+                                {
+                                    <span>@seatBooking.Seat.SeatNumber</span>
+
+                                    <br />
+                                }
+                            </td>
+                            <td>@booking.Status</td>
+                            <td>
+                                @if (booking.Status == "Pending")
+                                {
+                                    <form method="post" asp-page-handler="UpdateStatus" asp-route-bookingId="@booking.BookingId">
+                                        <button type="submit" class="btn btn-success btn-sm">Mark as Done</button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6">No bookings available.</td>
+                    </tr>
+                }
+
+
+            </tbody>
+        </table>
+
+        <!-- Phân trang -->
+        <div class="pagination">
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <a href="@Url.Page("ManageBookings", new { pageIndex = i })" class="btn btn-primary @((i == Model.CurrentPage) ? "disabled" : "")">
+                    @i
+                </a>
+            }
+        </div>
+    </div>
+   
+
+</body>
+</html>

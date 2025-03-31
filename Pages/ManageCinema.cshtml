@@ -1,0 +1,87 @@
+﻿@page
+@model PRN222_Project.Pages.ManageCinemaModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Cinemas</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        footer {
+            width: 85%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Manage Cinemas</h2>
+
+    <div class="mb-4">
+        <a href="/AddCinema" class="btn btn-success">Add New Cinema</a>
+    </div>
+
+    <!-- Table displaying Cinema and its screens -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Cinema Name</th>
+                <th>Location</th>
+                <th>Screens</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cinema in Model.Cinemas)
+            {
+                <tr>
+                    <td>@cinema.CinemaName</td>
+                    <td>@cinema.Location</td>
+                    <td>
+                        @foreach (var screen in cinema.Screens)
+                        {
+                            <div>@screen.ScreenName</div>
+                        }
+                    </td>
+                    <td>
+                        <a href="/AddScreen?cinemaId=@cinema.CinemaId" class="btn btn-primary btn-sm">Add Screen</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>

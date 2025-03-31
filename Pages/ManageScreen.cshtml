@@ -1,0 +1,85 @@
+﻿@page
+@model PRN222_Project.Pages.ManageScreenModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Screens</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        footer {
+            width: 85%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h2>Manage Screens</h2>
+
+    <!-- Table displaying Screen info -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Screen Name</th>
+                <th>Cinema</th>
+                <th>Capacity</th>
+                <th>Current Seats</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var screen in Model.Screens)
+            {
+                <tr>
+                    <td>@screen.ScreenName</td>
+                    <td>@screen.Cinema.CinemaName</td>
+                    <td>@screen.Capacity</td>
+                    <td>
+                        <!-- Get the count of seats for this screen -->
+                        @screen.Seats.Count
+                    </td>
+                    <td>
+                        <!-- Button to Add Seats -->
+                        <a href="/AddSeats?screenId=@screen.ScreenId" class="btn btn-success btn-sm">Add Seats</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>

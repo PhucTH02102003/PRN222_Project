@@ -1,0 +1,141 @@
+﻿@page
+@model PRN222_Project.Pages.ManageMoviesModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Movies</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+       body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            /* align-items: flex-start;  */
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        }
+
+        footer {
+            width: 85%;
+            height: -100px;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            height: -100px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Manage Movies</h2>
+
+        <div class="mb-3">
+            <a href="/AddMovie" class="btn btn-success">Add Movie</a> <!-- Nút Add Movie màu xanh lá cây -->
+        </div>
+        <!-- Table displaying movie details -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Description</th>
+                    <th>Duration</th>
+                    <th>Genre</th>
+                    <th>Movie Title</th>
+                    <th>Showtime</th>
+                    <th>Screen</th>
+                    <th>Cinema</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var movie in Model.Movies)
+                {
+                    <tr>
+                        <td>@movie.Description</td> <!-- Hiển thị mô tả của phim -->
+                        <td>@movie.Duration minutes</td> <!-- Hiển thị thời gian phim -->
+                        <td>@movie.Genre</td> <!-- Hiển thị thể loại phim -->
+                        <td>@movie.Title</td> <!-- Hiển thị tiêu đề phim -->
+                        <!-- Showtime cột -->
+                        <td>
+                            @foreach (var showtime in movie.Showtimes)
+                            {
+                                <div>
+                                    @if (showtime.StartTime.HasValue)
+                                    {
+                                        @showtime.StartTime.Value.ToString("MM/dd/yyyy hh:mm tt")
+                                    }
+                                    else
+                                    {
+                                        <span>Not Available</span>
+                                    }
+                                    -
+                                    @if (showtime.EndTime.HasValue)
+                                    {
+                                        @showtime.EndTime.Value.ToString("hh:mm tt")
+                                    }
+                                    else
+                                    {
+                                        <span>Not Available</span>
+                                    }
+                                </div>
+                            }
+                        </td>
+
+                        <!-- Screen cột -->
+                        <td>
+                            @foreach (var showtime in movie.Showtimes)
+                            {
+                                <div>
+                                    @showtime.Screen.ScreenName
+                                </div>
+                            }
+                        </td>
+
+                        <!-- Cinema cột -->
+                        <td>
+                            @foreach (var showtime in movie.Showtimes)
+                            {
+                                <div>
+                                    @showtime.Screen.Cinema.CinemaName
+                                </div>
+                            }
+                        </td>
+
+                        <!-- Action cột -->
+                        <td>
+                            <a href="/EditMovie/@movie.MovieId" class="btn btn-primary btn-sm">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

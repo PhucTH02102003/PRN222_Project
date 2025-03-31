@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using PRN222_Project.Models;
+using System.Linq;
 
 namespace PRN222_Project.Pages
 {
-    [Authorize(Roles = "Admin")]  // Chỉ cho phép người dùng có vai trò Admin truy cập
+    [Authorize(Roles = "Admin")]
     public class AdminPageModel : PageModel
     {
         private readonly CinemaManagementContext _context;
@@ -16,29 +17,26 @@ namespace PRN222_Project.Pages
             _context = context;
         }
 
+        public int TotalCustomers { get; set; }
+        public int TotalMovies { get; set; }
+        public int TotalCinemas { get; set; }
+        public int TotalSeats { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
-            // Kiểm tra xem người dùng đã đăng nhập và có quyền Admin hay không
-            var username = User.Identity.Name;
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            // Lấy tổng số lượng Customer
+            TotalCustomers = await _context.Users.CountAsync();
 
-            if (user == null)
-            {
-                return Unauthorized();  // Nếu người dùng không hợp lệ
-            }
+            // Lấy tổng số lượng Movies
+            TotalMovies = await _context.Movies.CountAsync();
 
-            // Kiểm tra vai trò của người dùng
-            var userRoles = await _context.UserRoles
-                .Where(ur => ur.UserId == user.UserId)
-                .Include(ur => ur.Role)
-                .ToListAsync();
+            // Lấy tổng số lượng Cinemas
+            TotalCinemas = await _context.Cinemas.CountAsync();
 
-            if (!userRoles.Any(ur => ur.Role.RoleName == "Admin"))
-            {
-                return Forbid();  // Nếu người dùng không có vai trò Admin
-            }
+            // Lấy tổng số ghế
+            TotalSeats = await _context.Seats.CountAsync();
 
-            return Page();  // Nếu người dùng có vai trò Admin, cho phép truy cập trang
+            return Page();
         }
     }
 }

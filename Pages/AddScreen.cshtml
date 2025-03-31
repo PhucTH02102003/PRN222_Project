@@ -1,0 +1,69 @@
+﻿@page
+@model PRN222_Project.Pages.AddScreenModel
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Cinema</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        footer {
+            width: 85%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            margin-left: 250px;
+            position: fixed;
+        }
+
+        header {
+            width: 85%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+            margin-left: 250px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h2>Add New Screen for @Model.Cinema.CinemaName</h2>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="ScreenName">Screen Name</label>
+            <input type="text" class="form-control" id="ScreenName" name="ScreenName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="Capacity">Capacity</label>
+            <input type="number" class="form-control" id="Capacity" name="Capacity" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Add Screen</button>
+    </form>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
