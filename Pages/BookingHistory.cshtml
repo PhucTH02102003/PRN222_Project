@@ -1,0 +1,127 @@
+﻿@page
+@model PRN222_Project.Pages.BookingHistoryModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking History</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #D4A5A5, #A3C4F3);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Điều chỉnh vị trí header và footer */
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
+        }
+
+        footer {
+            width: 100%;
+            bottom: 0;
+            position: absolute;
+            background-color: #f8f9fa;
+            margin-top: 20px;
+            position: fixed;
+        }
+
+        header {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            background-color: #ffffff;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #5c3c92;
+            color: white;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        .btn-back {
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Booking History</h2>
+
+        @if (Model.Bookings != null && Model.Bookings.Count > 0)
+        {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Cinema</th>
+                        <th>Showtime</th>
+                        <th>Seats</th>
+                        <th>Status</th>
+                        <th>Total Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.Bookings)
+                    {
+                        <tr>
+                            <td>@booking.Showtime.Movie.Title</td>
+                            <td>@booking.Showtime.Screen.Cinema.CinemaName</td>
+                            <td>@(booking.Showtime.StartTime.HasValue ? booking.Showtime.StartTime.Value.ToString("hh:mm tt") : "No Time Available")</td>
+
+                            <td>
+                                @foreach (var seat in booking.SeatBookings)
+                                {
+                                    @seat.Seat.SeatNumber
+
+                                    <br />
+                                }
+                            </td>
+                            <td>@booking.Status</td>
+                            <td>@booking.TotalAmount</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No booking history found.</p>
+        }
+
+        <a href="/CustomerPage" class="btn btn-primary btn-back">Back to Customer Page</a>
+    </div>
+
+</body>
+</html>

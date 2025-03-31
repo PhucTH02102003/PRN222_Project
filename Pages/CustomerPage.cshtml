@@ -24,15 +24,10 @@
 
         .container {
             max-width: 1200px; /* Đảm bảo rằng phần nội dung không bị rộng quá */
-            margin-top: 20px;
         }
 
         footer {
-            width: 100%;
-            bottom: 0;
-            position: absolute;
-            background-color: #f8f9fa;
-            margin-top: 20px;
+            display: none;
         }
 
         header {
@@ -52,7 +47,8 @@
             width: 100%;
             max-width: 600px;
             text-align: center;
-            margin-left: 300px;
+            margin-left: 270px;
+            margin-top: 40px;
         }
 
         h2 {
@@ -101,6 +97,7 @@
             gap: 10px;
             padding-top: 20px;
         }
+
     </style>
 </head>
 <body>
@@ -139,6 +136,10 @@
             <!-- Next Button to proceed to MovieDetails -->
             <button type="submit">Next</button>
         </form>
+
+        <div style="margin-top: 20px;">
+            <a href="/BookingHistory" class="btn btn-secondary" style="text-decoration: none; font-weight: bold; color: #5c3c92;">View Booking History</a>
+        </div>
     </div>
 
     <script>
@@ -161,6 +162,23 @@
             }
         }
     </script>
+    <script src="~/lib/microsoft-signalr/signalr.min.js"></script>
+    <script>
+    // Kết nối tới SignalR Hub
+    var connection = new signalR.HubConnectionBuilder()
+        .withUrl("/notificationHub")  // Đường dẫn đến SignalR Hub
+        .build();
+
+    // Lắng nghe sự kiện nhận thông báo
+    connection.on("ReceiveMessage", function (message) {
+        alert(message);  // Hiển thị thông báo (hoặc bạn có thể hiển thị theo cách khác)
+    });
+
+    // Bắt đầu kết nối
+    connection.start().catch(function (err) {
+        return console.error(err.toString());
+    });
+</script>
 
 </body>
 </html>

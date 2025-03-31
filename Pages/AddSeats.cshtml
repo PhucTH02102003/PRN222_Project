@@ -12,6 +12,12 @@
 <body>
     <h2>Add Seats for Screen: @Model.Screen.ScreenName</h2>
 
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
     <form method="post">
         <div class="form-group">
             <label for="SeatNumber">Seat Number</label>

@@ -52,6 +52,7 @@ namespace PRN222_Project
                 return Task.CompletedTask;
             });
             app.MapHub<BookingHub>("/bookingHub");
+            app.MapHub<NotificationHub>("/notificationHub");
             // Định nghĩa các trang Razor Pages
             app.MapRazorPages();
 

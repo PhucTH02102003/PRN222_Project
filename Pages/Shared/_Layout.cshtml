@@ -11,43 +11,43 @@
     <style>
         /* Sidebar cho Admin */
         .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background-color: #343a40;
-            color: white;
-            padding: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 100%;
+        background-color: #343a40;
+        color: white;
+        padding: 20px;
         }
 
-            .sidebar .nav-link {
-                color: white;
-                font-size: 16px;
-                margin-bottom: 10px;
-            }
+        .sidebar .nav-link {
+        color: white;
+        font-size: 16px;
+        margin-bottom: 10px;
+        }
 
-                .sidebar .nav-link:hover {
-                    color: #f8f9fa;
-                    background-color: #495057;
-                }
+        .sidebar .nav-link:hover {
+        color: #f8f9fa;
+        background-color: #495057;
+        }
 
         /* Phần nội dung chính */
         .content-area {
-            margin-left: 250px; /* Để nội dung không bị che khuất bởi sidebar */
-            padding: 20px;
+        margin-left: 250px; /* Để nội dung không bị che khuất bởi sidebar */
+        padding: 20px;
         }
 
         /* CSS to make sure the content doesn't get overlapped by sidebar */
         body {
-            display: flex;
+        display: flex;
         }
 
         .main-content {
-            flex-grow: 1;
+        flex-grow: 1;
         }
 
-        
+
     </style>
 </head>
 
@@ -56,29 +56,34 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container">
-                <a class="navbar-brand" href="/">PRN222_Project</a>
+                @if (User.Identity!.IsAuthenticated)
+                {
+                    @if (User.IsInRole("Customer"))
+                    {
+                        <a class="navbar-brand" href="/CustomerPage">PRN222_Project</a>
+                    }
+                    else if (User.IsInRole("Admin"))
+                    {
+                        <a class="navbar-brand" href="/AdminPage">PRN222_Project</a>
+                    }
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Login">Login</a>
+                    </li>
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity!.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <!-- Phân quyền: nếu là Customer, Home dẫn đến CustomerPage, nếu là Admin thì dẫn đến AdminPage -->
-                                @if (User.IsInRole("Customer"))
-                                {
-                                    <a class="nav-link" href="/CustomerPage">Home</a>
-                                }
-                                else if (User.IsInRole("Admin"))
-                                {
-                                    <a class="nav-link" href="/AdminPage">Home</a>
-                                }
-                            </li>
+                        { 
                             <li class="nav-item dropdown">
                                 <!-- Tên người dùng với dropdown khi di chuột -->
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Hello, @User.Identity.Name
+                                    @User.Identity.Name
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
                                     <li><a class="dropdown-item" href="/ChangePassword">Change Password</a></li>

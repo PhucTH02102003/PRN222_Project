@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using PRN222_Project.Hubs;
 using PRN222_Project.Models;
 
 namespace PRN222_Project.Pages
@@ -8,10 +10,12 @@ namespace PRN222_Project.Pages
     public class ManageBookingsModel : PageModel
     {
         private readonly CinemaManagementContext _context;
+        private readonly IHubContext<NotificationHub> _hubContext;
 
-        public ManageBookingsModel(CinemaManagementContext context)
+        public ManageBookingsModel(CinemaManagementContext context, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
+            _hubContext = hubContext;
         }
 
         public IList<Booking> Bookings { get; set; }
@@ -44,6 +48,7 @@ namespace PRN222_Project.Pages
         {
             // Lấy booking từ cơ sở dữ liệu
             var booking = await _context.Bookings
+                .Include(b => b.User)  // Lấy thông tin người dùng (user)
                 .FirstOrDefaultAsync(b => b.BookingId == bookingId);
 
             if (booking == null)
@@ -57,6 +62,11 @@ namespace PRN222_Project.Pages
                 booking.Status = "Done";  // Thay đổi trạng thái thành Done
                 _context.Bookings.Update(booking);  // Cập nhật booking
                 await _context.SaveChangesAsync();  // Lưu thay đổi vào cơ sở dữ liệu
+
+                // Gửi thông báo đến người dùng qua SignalR
+                var userId = booking.UserId.ToString();  // Lấy UserId của người dùng (giả sử UserId là kiểu int)
+                var message = "Your booking has been completed and marked as 'Done'.";
+                await _hubContext.Clients.User(userId).SendAsync("ReceiveMessage", message);  // Gửi thông báo
             }
 
             return RedirectToPage();  // Quay lại trang quản lý booking
